@@ -11,11 +11,11 @@ use App\User;
 
 class CheckStaticFile
 {
-    public function check()
+    public static function check()
     {
         $filePath = isset($_GET['file_path']) ? $_GET['file_path'] : '';
 
-        $assetFolder = $this->getAssetFolder();
+        $assetFolder = self::getAssetFolder();
         $attachmentLocation = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . $assetFolder . DIRECTORY_SEPARATOR . $filePath;
         if (file_exists($attachmentLocation) && is_file($attachmentLocation))
         {
@@ -28,13 +28,13 @@ class CheckStaticFile
         }
     }
 
-    public function getAssetFolder()
+    public static function getAssetFolder()
     {
         if (isset($_COOKIE['client_version']))
         {
             return $_COOKIE['client_version'];
         }
-        $this->setClientVersion('client_version', config('view.client_version'));
+        self::setClientVersion('client_version', config('view.client_version'));
 
         return config('view.client_version');
     }

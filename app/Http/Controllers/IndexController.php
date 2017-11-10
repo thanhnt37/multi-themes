@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use CheckStaticFile;
+
 class IndexController extends Controller
 {
     public function index()
     {
-        return view('v1.index');
+        $clientVersion = CheckStaticFile\CheckStaticFile::getAssetFolder();
+        return view($clientVersion . '.index');
     }
 }

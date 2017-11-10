@@ -36,7 +36,7 @@ require __DIR__.'/../vendor/autoload.php';
 */
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
-
+require_once __DIR__.'/../CheckStaticFile.php';
 /*
 |--------------------------------------------------------------------------
 | Run The Application
@@ -56,9 +56,7 @@ $response = $kernel->handle(
 );
 
 // handle static file follow client version
-require_once __DIR__.'/../CheckStaticFile.php';
-$staticFile = new \CheckStaticFile\CheckStaticFile();
-$staticFile->check();
+\CheckStaticFile\CheckStaticFile::check();
 
 $response->send();
 
