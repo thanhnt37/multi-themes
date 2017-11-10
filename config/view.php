@@ -30,4 +30,5 @@ return [
 
     'compiled' => realpath(storage_path('framework/views')),
 
+    'client_version' => 'v1'
 ];

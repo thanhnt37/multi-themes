@@ -55,6 +55,11 @@ $response = $kernel->handle(
     $request = Illuminate\Http\Request::capture()
 );
 
+// handle static file follow client version
+require_once __DIR__.'/../CheckStaticFile.php';
+$staticFile = new \CheckStaticFile\CheckStaticFile();
+$staticFile->check();
+
 $response->send();
 
 $kernel->terminate($request, $response);
