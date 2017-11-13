@@ -16,7 +16,7 @@ class CheckStaticFile
         $filePath = isset($_GET['file_path']) ? $_GET['file_path'] : '';
 
         $assetFolder = self::getAssetFolder();
-        $attachmentLocation = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . $assetFolder . DIRECTORY_SEPARATOR . $filePath;
+        $attachmentLocation = public_path($assetFolder . DIRECTORY_SEPARATOR . $filePath);
         if (file_exists($attachmentLocation) && is_file($attachmentLocation))
         {
             header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
@@ -30,16 +30,22 @@ class CheckStaticFile
 
     public static function getAssetFolder()
     {
-        if (isset($_COOKIE['client_version']))
-        {
-            return $_COOKIE['client_version'];
-        }
-        self::setClientVersion('client_version', config('view.client_version'));
+        $clientVersion = isset($_COOKIE['client_version']) ? $_COOKIE['client_version'] : config('view.client_version');
 
-        return config('view.client_version');
+        $resourcePath = resource_path('views' . DIRECTORY_SEPARATOR . $clientVersion);
+        $publicPath = public_path($clientVersion);
+
+        // folder exist and not empty
+        if ( !file_exists($resourcePath) || (count(scandir($resourcePath)) <= 2) || !file_exists($publicPath) || (count(scandir($publicPath)) <= 2) ) {
+            $clientVersion = config('view.client_version');
+        }
+
+        self::setClientVersion('client_version', $clientVersion);
+
+        return $clientVersion;
     }
 
-    public function setClientVersion($name, $value = "", $expire = (7 * 86400), $path = "/", $domain = "", $secure = false, $httpOnly = false)
+    public static function setClientVersion($name, $value = "", $expire = (7 * 86400), $path = "/", $domain = "", $secure = false, $httpOnly = false)
     {
         $domain = ($domain != "") ? $domain : $_SERVER['SERVER_NAME'];
         $expire = time() + $expire;

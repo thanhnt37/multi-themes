@@ -13,3 +13,4 @@ yarn-error.log
 resources/views/v1
 public/v1
 composer.lock
+storage/packages

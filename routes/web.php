@@ -11,4 +11,9 @@
 |
 */
 
-\Route::get('/', 'IndexController@index');
+
+Route::group(['middleware' => ['web.auth']], function () {
+    Route::get('/', 'IndexController@index');
+});
+
+Route::post('/uploadPackage', 'IndexController@uploadPackage');
